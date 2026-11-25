@@ -1,0 +1,6 @@
+customer_id,first_name,last_name,city,country,total_payment,average_top_customer_payment
+1,Customer 1,Test,Shared,Country 1,100,80.0
+2,Customer 2,Test,City 2,Country 2,90,80.0
+3,Customer 3,Test,City 3,Country 3,80,80.0
+4,Customer 4,Test,City 4,Country 4,70,80.0
+5,Customer 5,Test,City 5,Country 5,60,80.0
