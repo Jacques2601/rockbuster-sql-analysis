@@ -1,95 +1,46 @@
-# rockbuster-sql-analysis
+# Rockbuster | SQL Business Analytics
 
-SQL-based data analysis project for **Rockbuster Stealth**, a global movie rental company adapting its business model for online streaming. This project focuses on customer segmentation, geographic revenue distribution, rental statistics, and high-value behavior analysis using advanced SQL techniques.
+## Business objective
 
-View this project in my portfolio presentation: [Google Slides Portfolio](https://docs.google.com/presentation/d/1qkxnA_wyYDSZGrbO7H8aNu45hsYfwUvO/edit?slide=id.p1#slide=id.p1)
+A CareerFoundry Data Analytics case study for a fictional movie rental business considering a move into online streaming. PostgreSQL queries investigate customer spending, geographic market concentration and film catalogue statistics to support business planning.
 
-## Project Purpose
+## Data model
 
-This portfolio project demonstrates the use of **PostgreSQL** to answer complex business questions that support Rockbuster’s strategy to compete with platforms like Netflix. The queries make use of **CTEs, joins, aggregations, and subqueries** to explore the customer base, top spenders, high-volume regions, and key product metrics.
+The project uses the [PostgreSQL DVD Rental sample database](https://www.postgresqltutorial.com/postgresql-sample-database/). Customer geography follows `customer.address_id → address.city_id → city.country_id`; payments join through `payment.customer_id`. Film catalogue statistics are analysed separately.
 
----
+## Featured SQL query
 
-## Key Questions Answered
+[Revised customer ranking by market](sql/top_customers_by_market.sql)
 
-1. **What is the average amount spent by the top 5 customers in the top 10 cities?**
-2. **How many top customers are located in each country?**
-3. **Who are the top 5 customers in the most active cities and countries?**
-4. **Which countries and cities have the highest number of customers?**
-5. **What are the descriptive statistics for key numerical fields in the film catalog?**
+This portfolio revision ranks countries by customer count, selects the ten highest-volume cities within those countries, aggregates payments by customer and returns the five highest-paying eligible customers alongside their average total payment. It uses geographic IDs instead of names, deterministic tie-breaks and a window aggregate. It is a static-reviewed revision, not yet executed against PostgreSQL.
 
----
+## Original query guide
 
-## Tools Used
+| Query | Business question |
+| --- | --- |
+| [Average payment](Average%20amount%20paid%20by%20top%205%20customers) | What is the average total payment of the selected top five customers? |
+| [Country distribution](Top%205%20Customers%20by%20Payment%3A%20Country%20Distribution%20Analysis) | How many selected top customers and total customers are in each country? |
+| [Top customers by city](Top%205%20High-Paying%20Customers%20from%20the%20Top%2010%20Cities) | Who are the highest-paying customers in the selected markets? |
+| [Customer payment benchmark](Top%205%20customers%20with%20highest%20total%20payments) | How does each selected customer's total compare with the group average? |
+| [Film statistics](Descriptive%20Statistics%20for%20Film%20Table) | What are the ranges, means and non-null counts for film attributes? |
 
-* **PostgreSQL** for querying the data
-* **Tableau** *(optional for visualizations – add link if used)*
-* **GitHub** for project version control and documentation
+## Technical skills
 
----
+PostgreSQL, CTEs, inner and left joins, nested subqueries, grouped aggregations, distinct counts, ranking with ORDER BY and LIMIT, descriptive statistics, and a window aggregate in the revised query.
 
-## Data Source
+## Running the queries
 
-The analysis is based on the **PostgreSQL DVD Rental Sample Database**, which simulates a real-world video rental business. It includes tables such as `customer`, `address`, `city`, `country`, `payment`, and `film`.
+1. Install PostgreSQL and restore the DVD Rental sample database using the instructions linked above.
+2. Clone this repository and connect to the restored database using pgAdmin, DBeaver or psql.
+3. Open `sql/top_customers_by_market.sql` and execute it. Original queries are preserved as extensionless text files and can be opened in a SQL editor.
+4. Compare the revised query with the original outputs, checking customer counts, geographic eligibility and payment totals.
 
----
+## Limitations and next steps
 
-## Query Summaries
+- No query result exports or execution tests are included; numerical findings are not claimed here.
+- Original geographic filters use city names, which can conflate distinct cities. The revised query uses IDs and deterministic ordering.
+- Validate the revised query against the sample database and test ties, duplicate city names and payment aggregation.
+- Consolidate remaining repeated query logic and add reusable SQL scripts and result exports.
+- Customer counts and historical payments are descriptive indicators, not forecasts of streaming demand.
 
-### 1. **Top Customer Average Payment Analysis**
-
-> *What is the average total payment made by the top 5 customers, filtered by the top 10 cities within the top 10 countries?*
-
-* Uses nested filtering through Common Table Expressions (CTEs)
-* Identifies geographic clusters of high-value customers
-* Supports regional targeting for loyalty campaigns
-
-### 2. **Top Customer Distribution by Country**
-
-> *How many of the top 5 highest-paying customers live in each country, compared to the total customer base?*
-
-* Aggregates both total and top customer counts by country
-* Combines `LEFT JOIN` and `DISTINCT` counting to enable comparison
-* Helps identify which countries host the most valuable clients
-
-### 3. **Top 5 Customers in Top Cities and Countries**
-
-> *Who are the top 5 customers from the top 10 cities and top 10 countries?*
-
-* Ranks customers by total payment
-* Filters by location using CTEs for cities and countries
-* Produces a list of high-revenue individuals for reward programs
-
-### 4. **Top Cities and Countries by Customer Volume**
-
-> *Which countries and cities have the highest customer counts?*
-
-* Identifies top 10 countries and then the top 10 cities within them
-* Helps inform regional strategies and market prioritization
-* Used as a filtering layer in other queries
-
-### 5. **Descriptive Statistics for the Film Table**
-
-> *What are the min, max, average, and count values for key film-related fields?*
-
-* Covers columns such as `rental_rate`, `replacement_cost`, `length`, and `rental_duration`
-* Useful for understanding product pricing, inventory planning, and catalog composition
-* Offers baseline statistics to detect outliers or set thresholds
-
----
-
-## How to Use
-
-1. Clone or fork this repository.
-2. Import the [DVD Rental sample database](https://www.postgresqltutorial.com/postgresql-sample-database/) into PostgreSQL.
-3. Run the queries in any SQL IDE (e.g., pgAdmin, DBeaver, or DataGrip).
-4. Optionally, export results to a BI tool like Tableau for visualization.
-
----
-
-## Next Steps (Optional Enhancements)
-
-* Create Tableau dashboards for top customer mapping, payment distributions, and film inventory insights.
-* Add Python notebooks for deeper statistical analysis or forecasting.
-* Automate report generation for recurring insights.
-
+The original five coursework queries remain unchanged. The additional query is a portfolio refinement prepared with AI assistance and requires execution and author review.
